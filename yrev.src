@@ -1,0 +1,40 @@
+decl main() : int;
+decl A : int[5];
+decl rev(int[],int) : int;
+decl list(int[],int) : int;
+
+impl main() {
+  i : 0;
+  while (i < 5) {
+    A[i] = i * 10;
+    i = i + 1;
+  };
+  put("initial contents\n");
+  list(A,5);
+  rev(A,5);
+  put("after rev\n");
+  list(A,5);
+  put("Goodbye\n");
+};
+
+impl list(AA,cnt) {
+  i : 0;
+	while (i < 5) {
+		put(A[i]);
+		put(" ");
+		i = i + 1;
+	};
+  put("\n");
+};
+
+impl rev(AA,cnt) {
+  i : 0;
+  while (i * 2 < cnt - 1) {
+    tmp : AA[i];
+    AA[i] = AA[cnt - 1 - i];
+    AA[cnt - 1 - i] = tmp;
+    i = i + 1;
+  };
+};
+
+

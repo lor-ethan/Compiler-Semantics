@@ -1,0 +1,106 @@
+// state
+cnst INIT   : 0;
+cnst IDENT  : 1;
+cnst NUMBER : 2;
+cnst FINAL  : 100;
+
+// token numbers
+cnst EOFTOK : 0;
+cnst IDTOK  : 1;
+cnst NUMTOK : 2;
+cnst UNKWN  : 100;
+
+decl main() : int;
+decl nextToken() : int;
+decl isAlpha(chr) : int;
+decl isDigit(chr) : int;
+
+impl isAlpha(c) {
+  if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' ) { return 1; };
+  return 0;
+};
+
+impl isDigit(c) {
+  if (c >= '0' && c <= '9' ) { return 1; };
+  return 0;
+};
+
+decl bufChr : chr;
+decl getChr() : chr;
+decl ungetChr(chr): int;
+
+impl getChr() {
+  if (bufChr ## '\0') {
+    tmp : bufChr;
+    bufChr = '\0';
+    return tmp;
+  }
+  else {
+    return get(chr);
+  };
+};
+
+impl ungetChr(c) {
+  bufChr = c;
+};
+
+impl nextToken() {
+  token : 0;
+  state : INIT;
+  letter : getChr();
+  while ( state < FINAL) {
+    if (state == INIT) {
+      if (isAlpha(letter) == 1) {
+        state = IDENT;
+        letter = getChr();
+      }
+      else {
+        if (isDigit(letter) == 1) {
+          state = NUMBER;
+          letter = getChr();
+        }
+        else {
+          if (letter == '\0') {
+            state = FINAL;
+            token = EOFTOK;
+            ungetChr(letter);
+          }
+          else {
+            letter = getChr();
+          };
+        };
+      };
+    };
+    if (state == IDENT) {
+      if (isAlpha(letter) == 1) {
+        letter = getChr();
+      }
+      else {
+        state = FINAL;
+        token = IDTOK;
+        ungetChr(letter);
+      };
+    };
+    if (state == NUMBER) {
+      if (isDigit(letter) == 1) {
+        letter = getChr();
+      }
+      else {
+        state = FINAL;
+        token = NUMTOK;
+        ungetChr(letter);
+      };
+    };
+  };
+  return token;
+};
+
+impl main() {
+  bufChr = '\0';
+  tok : nextToken();
+  while (tok ## 0) {
+    put(tok);
+    put('\n');
+    tok = nextToken();
+  };
+};

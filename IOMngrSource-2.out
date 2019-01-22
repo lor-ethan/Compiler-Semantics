@@ -1,0 +1,8 @@
+    1: include something;
+    2: var [7m A [0m[4m=[0m [7m B [0m[4m250[0m;
+       -A EQUAL found
+       -B NUMBR found
+    3: longvar [7m A [0m[4m=[0m [7m B [0m[4m4713[0m [7m C [0m[4m-[0m 22;
+       -A EQUAL found
+       -B NUMBR found
+       -C UNKWN found

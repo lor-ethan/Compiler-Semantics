@@ -1,0 +1,16 @@
+decl main() : int;
+decl fac(int) : int;
+
+impl main() {
+  put("> ");
+  x : get(int);
+  r : fac(x);
+  put("fac= ");
+  put(r);
+  put("\n");
+};
+
+impl fac(x) {
+  if (x == 1) { return x; };
+  return x * fac(x-1);
+};

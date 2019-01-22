@@ -1,0 +1,46 @@
+decl main() : int;
+decl A : int[10];
+decl insert(int,int[],int) : int;
+decl list(int[],int) : int;
+
+impl main() {
+  i : 0;
+  while (i < 10) {
+    put("> ");
+    x : get(int);
+    insert(x,A,i);
+    list(A,10);
+    i = i + 1;
+  };
+  put("\n");
+  list(A,10);
+};
+
+impl insert(x,AA,filled) {
+  i : 0;
+  while (i < filled && AA[i] < x) {
+    i = i + 1;
+  };
+  if (i == filled) {
+    AA[i] = x;
+  }
+  else {
+    while (i < filled) {
+      tmp : A[i];
+      A[i] = x;
+      x = tmp;
+      i = i + 1;
+    };
+    A[i] = x;
+  };
+};
+
+impl list(AA,cnt) {
+	i : 0;
+	while (i < cnt) {
+		put(A[i]);
+		put(" ");
+		i = i + 1;
+	};
+	put("\n");
+};

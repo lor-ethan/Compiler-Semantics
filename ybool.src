@@ -1,0 +1,42 @@
+/* Boolean Test.
+*/
+
+decl a, b, c, d: int;
+decl main() : int;
+
+impl main() {
+  a = 1;
+  b = 2;
+  c = 3;
+
+  put("a = ");
+  put(a);
+  put("\n");
+
+  a++;
+
+  put("a = ");
+  put(a);
+  put("\n");
+
+/*
+
+  for ( d = 0; d < 3; d = d++) {
+    /* put("HELLO"); */
+  };
+
+  put("b = ");
+  put(b);
+  put("\n");
+
+  put("c = ");
+  put(c);
+  put("\n");
+
+  put("d = ");
+  put(d);
+  put("\n");
+
+*/
+  
+};

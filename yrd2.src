@@ -1,0 +1,347 @@
+// state
+cnst INIT     : 0;
+cnst IDENT    : 1;
+cnst NUMBER   : 2;
+cnst FINAL    : 100;
+
+// token numbers
+cnst EOFTOK   : 0;
+cnst IDTOK    : 1;
+cnst NUMTOK   : 2;
+cnst PLUSTOK  : 3;
+cnst MINUSTOK : 4;
+cnst TIMESTOK : 5;
+cnst DIVIDETOK: 6;
+cnst EQUALTOK : 7;
+cnst SEMITOK  : 8;
+cnst LPARENTOK: 9;
+cnst RPARENTOK: 10;
+cnst UNKWN    : 100;
+
+decl main() : int;
+decl nextToken() : int;
+decl letterKind(chr) : chr;
+
+impl letterKind(c) {
+  if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' ) { return 'A'; };
+  if (c >= '0' && c <= '9' ) { return '0'; };
+  return c;
+};
+
+decl bufChr : chr;
+decl getChr() : chr;
+decl ungetChr(chr): int;
+
+impl getChr() {
+  if (bufChr ## '\0') {
+    tmp : bufChr;
+    bufChr = '\0';
+    return tmp;
+  }
+  else {
+    return get(chr);
+  };
+};
+
+impl ungetChr(c) {
+  bufChr = c;
+};
+
+impl nextToken() {
+  token : 0;
+  state : INIT;
+  letter : getChr();
+  while ( state < FINAL) {
+		switch (state) {
+  	  case INIT: {
+    	  switch (letterKind(letter)) {
+      	  case 'A': {
+        	  state = IDENT; letter = getChr();
+       	 	}
+       	 	case '0': {
+        	  state = NUMBER; letter = getChr();
+        	}
+        	case '+': {
+          	state = FINAL; token = PLUSTOK;
+       	 	}
+        	case '-': {
+          	state = FINAL; token = MINUSTOK;
+        	}
+          case '*': {
+          	state = FINAL; token = TIMESTOK;
+        	}
+        	case '/': {
+          	state = FINAL; token = DIVIDETOK;
+        	}
+          case '=': {
+            state = FINAL; token = EQUALTOK;
+          }
+          case ';': {
+            state = FINAL; token = SEMITOK;
+          }
+          case '(': {
+            state = FINAL; token = LPARENTOK;
+          }
+          case ')': {
+            state = FINAL; token = RPARENTOK;
+          }
+          case '\0': {
+            state = FINAL; token = EOFTOK; 
+          }
+        	default: {
+            letter = getChr();
+          }
+      	};
+    	}
+    	case IDENT: {
+      	if (letterKind(letter) == 'A') {
+        	letter = getChr();
+      	}
+      	else {
+        	state = FINAL; token = IDTOK; ungetChr(letter);
+      	};
+    	}
+    	case NUMBER: {
+      	if (letterKind(letter) == '0') {
+        	letter = getChr();
+      	}
+      	else {
+        	state = FINAL; token = NUMTOK; ungetChr(letter);
+      	};
+    	}
+    	default: {
+      	put("unknown state "); put(state); put("\n");
+    	}
+    };
+  };
+  return token;
+};
+
+/*
+Prog 		-> Stmt MStmt
+Stmt    -> IDTOK EQUALTOK Expr SEMITOK
+MStmt		-> Stmt MStmt
+MStmt   ->
+Expr    -> Term MExpr
+MExpr   -> AddOp Expr
+MExpr   ->
+Term    -> Factor MTerm
+MTerm   -> MultOp Term
+MTerm   ->
+Factor  -> IDTOK
+Factor  -> NUMTOK
+Factor  -> MINUSTOK Factor
+Factor  -> '(' Expr ')'
+AddOp   -> '+'
+AddOp   -> '-'
+MultOp  -> '*'
+MultOp  -> '/'
+*/
+
+decl curToken : int;
+
+decl match(int) : int;
+
+impl match(term) {
+  if (term == curToken) {
+    curToken = nextToken();
+    return 1;
+  }
+  else {
+    put("match failure "); put(term); put(" "); put(curToken); put(" \n");
+    return 0;
+  };
+};
+
+decl prog() : int;
+decl stmt() : int;
+decl mstmt() : int;
+decl expr() : int;
+decl mexpr() : int;
+decl term() : int;
+decl mterm() : int;
+decl factor() : int;
+decl addop() : int;
+decl multop() : int;
+
+impl prog() {
+  put("prog "); put(curToken); put("\n");
+  if (stmt() == 0) { return 0; };
+  if (mstmt() == 0) { return 0; };
+  return 1;
+};
+
+impl stmt() {
+  put("stmt "); put(curToken); put("\n");
+  if (match(IDTOK) == 0) { return 0; };
+  if (match(EQUALTOK) == 0) { return 0; };
+  if (expr() == 0) { return 0; };
+  if (match(SEMITOK) == 0) { return 0; };
+  return 1;
+};
+
+impl mstmt() {
+  put("mstmt "); put(curToken); put("\n");
+  switch (curToken) {
+    case IDTOK: {
+      if (match(IDTOK) == 0) { return 0; };
+      if (match(EQUALTOK) == 0) { return 0; };
+      if (expr() == 0) { return 0; };
+      if (match(SEMITOK) == 0) { return 0; };
+      return 1;
+    }
+    default: {
+      return 1;
+    }
+  };
+};
+
+impl expr() {
+  put("expr "); put(curToken); put("\n");
+  if (term() == 0) { return 0; };
+  if (mexpr() == 0) { return 0; };
+  return 1;
+};
+
+impl mexpr() {
+  put("mexpr "); put(curToken); put("\n");
+  switch (curToken) {
+    case PLUSTOK: {
+      if (addop() == 0) { return 0; };
+      if (expr() == 0) { return 0; };
+      return 1;
+    }
+    case MINUSTOK: {
+      if (addop() == 0) { return 0; };
+      if (expr() == 0) { return 0; };
+      return 1;
+    }
+    default: {
+      return 1;
+    }
+  };
+};
+
+impl term() {
+  put("term "); put(curToken); put("\n");
+  if (factor() == 0) { return 0; };
+  if (mterm() == 0) { return 0; };
+  return 1;
+};
+
+impl mterm() {
+  put("mterm "); put(curToken); put("\n");
+  switch (curToken) {
+    case TIMESTOK: {
+      if (multop() == 0) { return 0; };
+      if (term() == 0) { return 0; };
+      return 1;
+    }
+    case DIVIDETOK: {
+      if (multop() == 0) { return 0; };
+      if (term() == 0) { return 0; };
+      return 1;
+    }
+    default: {
+      return 1;
+    }
+  };
+};
+
+impl factor() {
+  put("factor "); put(curToken); put("\n");
+  switch (curToken) {
+    case IDTOK: {
+      if (match(IDTOK) == 0) { return 0; };
+      return 1;
+    }
+    case NUMTOK: {
+      if (match(NUMTOK) == 0) { return 0; };
+      return 1;
+    }
+    case MINUSTOK: {
+      if (match(MINUSTOK) == 0) { return 0; };
+      if (factor() == 0) { return 0; };
+      return 1;
+    }
+    case LPARENTOK: {
+      if (match(LPARENTOK) == 0) { return 0; };
+      if (expr() == 0) { return 0; };
+      if (match(RPARENTOK) == 0) { return 0; };
+      return 1;
+    }
+    default: {
+      put("factor no case in switch "); put(curToken); put("\n");
+      return 0;
+    }
+  };
+};
+
+impl addop() {
+  put("addop "); put(curToken); put("\n");
+  switch (curToken) {
+    case PLUSTOK: {
+      if (match(PLUSTOK) == 0) { return 0; };
+      return 1;
+    }
+    case MINUSTOK: {
+      if (match(MINUSTOK) == 0) { return 0; };
+      return 1;
+    }
+    default: {
+      put("addop no case in switch "); put(curToken); put("\n");
+      return 0;
+    }
+  };
+};
+
+impl multop() {
+  put("multop "); put(curToken); put("\n");
+  switch (curToken) {
+    case TIMESTOK: {
+      if (match(TIMESTOK) == 0) { return 0; };
+      return 1;
+    }
+    case DIVIDETOK: {
+      if (match(DIVIDETOK) == 0) { return 0; };
+      return 1;
+    }
+    default: {
+      put("multop no case in switch "); put(curToken); put("\n");
+      return 0;
+    }
+  };
+};
+
+
+impl main() {
+  bufChr = '\0';
+  curToken = nextToken();
+  ret : prog();
+  if (ret == 1) {
+    put("parse success\n");
+  }
+  else {
+    put("parse failure\n");
+  };
+};
+
+
+/*
+impl main() {
+  bufChr = '\0';
+  tok : nextToken();
+  while (tok ## 0) {
+    put(tok);
+    put('\n');
+    tok = nextToken();
+  };
+};
+*/
+
+
+
+
+
+
+

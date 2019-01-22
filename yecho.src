@@ -1,0 +1,9 @@
+decl main() : int;
+
+impl main() {
+  loop {
+    c : get(chr);
+    if (c == '\0') { return 0; };
+    put(c);
+  };
+};

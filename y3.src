@@ -1,0 +1,26 @@
+/* Input two numbers and calculate GCD
+*/
+
+decl x, y : int;
+decl main() : int;
+
+impl main() {
+  put('>');
+  x = get(int);
+  put('>');
+  y = get(int);
+  put('x'); put('='); put(x); put('\n');
+  put('y'); put('='); put(y); put('\n');
+
+  while (x ## y) {
+    if (x < y) {
+      y = y - x;
+    }
+    else {
+      x = x - y;
+    };
+  };
+
+  put('g'); put('='); put(x); put('\n');
+};
+

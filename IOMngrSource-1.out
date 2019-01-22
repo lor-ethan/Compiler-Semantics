@@ -1,0 +1,19 @@
+    2: var [7m A [0m[4m=[0m [7m B [0m[4m250[0m;
+       -A EQUAL found
+       -B NUMBR found
+    3: longvar [7m A [0m[4m=[0m [7m B [0m[4m4713[0m - [7m C [0m[4m22[0m;
+       -A EQUAL found
+       -B NUMBR found
+       -C NUMBR found
+    6: more[7m A [0m[4m54[0m;
+       -A NUMBR found
+   10: [7m A [0m[4m12[0m,[7m B [0m[4m13[0m,[7m C [0m[4m14[0m,[7m D [0m[4m15[0m,[7m E [0m[4m16[0m,[7m F [0m[4m17[0m,[7m G [0m[4m18[0m,[7m H [0m[4m19[0m,[7m I [0m[4m20[0m
+       -A NUMBR found
+       -B NUMBR found
+       -C NUMBR found
+       -D NUMBR found
+       -E NUMBR found
+       -F NUMBR found
+       -G NUMBR found
+       -H NUMBR found
+       -I NUMBR found

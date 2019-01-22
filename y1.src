@@ -1,0 +1,7 @@
+decl x, y, z : int;
+decl ab, bcd : chr;
+decl main() : int;
+
+impl main() {
+
+};

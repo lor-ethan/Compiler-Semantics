@@ -1,0 +1,22 @@
+/* Input numbers and increase/decrement them.
+*/
+
+decl x: int;
+decl main() : int;
+
+impl main () {
+  x = 3;
+
+  put("x = ");
+  put(x);
+  put("\n");
+
+x--;
+x--;
+x--;
+
+  put("x = ");
+  put(x);
+  put("\n");
+
+};

@@ -1,0 +1,42 @@
+decl main() : int;
+decl isPrime(int) : chr;
+
+
+impl isPrime(x) {
+  r : -1;
+  d : 2;
+  loop {
+    a : ((x / d) * d);
+    if (a == x) { r = 0; break; };
+    d = d + 1;
+    xx : x / 2;
+    if (d > xx) { r = 1; break; };
+  };
+  if (r == 0) {
+    c : 'c';
+    return c;
+  }
+  else {
+    c : 'p';
+    return c;
+  };
+};
+
+impl main() {
+  put("> ");
+  n : get(int);
+  while (n ## 0) {
+    r : isPrime(n);
+    put("number ");
+    put(n);
+    put(" is ");
+    if (r == 'p') {
+      put("prime.\n");
+    }
+    else {
+      put("not prime.\n");
+    };
+    put("> ");
+    n = get(int);
+  };
+};

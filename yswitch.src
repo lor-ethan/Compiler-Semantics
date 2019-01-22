@@ -1,0 +1,35 @@
+decl main() : int;
+
+impl main() {
+  x : 0;
+  while (x < 7) {
+    switch (x) {
+      case 1: {
+        put("case 1\n");
+      }
+      case 2: {
+        put("case 2\n");
+      }
+      case 3: {
+        put("case 3\n");
+      }
+      case 5: {
+        put("case 5\n");
+      }
+      default: {
+        put("default\n");
+      }
+    };
+    x = x + 1;
+  };
+  c : 'a';
+  switch (c) {
+    case 'a': {
+      put("case a\n");
+    }
+    default: {
+      put("default\n");
+    }
+  };
+  put("Goodbye\n");
+};

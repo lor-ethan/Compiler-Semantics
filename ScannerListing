@@ -1,0 +1,100 @@
+./ScannerDriver
+    1: #[7m A [0m[4minclude[0m <[7m B [0m[4mstdio[0m.[7m C [0m[4mh[0m>
+       -A Token#=3, Length=7, Text="include"         -- No SymbolTable
+       -B Token#=3, Length=5, Text="stdio"           -- No SymbolTable
+       -C Token#=3, Length=1, Text="h"               -- No SymbolTable
+    2: #[7m A [0m[4minclude[0m <[7m B [0m[4mstring[0m.[7m C [0m[4mh[0m>
+       -A Token#=3, Length=7, Text="include"         -- No SymbolTable
+       -B Token#=3, Length=6, Text="string"          -- No SymbolTable
+       -C Token#=3, Length=1, Text="h"               -- No SymbolTable
+    3: #[7m A [0m[4minclude[0m <[7m B [0m[4mctype[0m.[7m C [0m[4mh[0m>
+       -A Token#=3, Length=7, Text="include"         -- No SymbolTable
+       -B Token#=3, Length=5, Text="ctype"           -- No SymbolTable
+       -C Token#=3, Length=1, Text="h"               -- No SymbolTable
+    4: [7m A [0m[4m@INIT[0m
+       -A Token#=1, Length=5, Text="@INIT"           
+    5: /* Something that should not be in the table.
+    6: */
+    7: 
+    8: [7m A [0m[4mint[0m
+       -A Token#=3, Length=3, Text="int"             -- new ident
+    9: [7m A [0m[4mmain[0m([7m B [0m[4mint[0m [7m C [0m[4margc[0m, [7m D [0m[4mchar[0m **[7m E [0m[4margv[0m) { [7m F [0m[4mchar[0m * [7m G [0m[4mname[0m;
+       -A Token#=3, Length=4, Text="main"            -- new ident
+       -B Token#=3, Length=3, Text="int"             -- occurrence 2
+       -C Token#=3, Length=4, Text="argc"            -- new ident
+       -D Token#=3, Length=4, Text="char"            -- new ident
+       -E Token#=3, Length=4, Text="argv"            -- new ident
+       -F Token#=3, Length=4, Text="char"            -- occurrence 2
+       -G Token#=3, Length=4, Text="name"            -- new ident
+   10:   [7m A [0m[4mint[0m [7m B [0m[4maCount[0m; //char * name;
+       -A Token#=3, Length=3, Text="int"             -- occurrence 3
+       -B Token#=3, Length=6, Text="aCount"          -- new ident
+   11:   [7m A [0m[4mfloat[0m [7m B [0m[4maSize[0m;
+       -A Token#=3, Length=5, Text="float"           -- new ident
+       -B Token#=3, Length=5, Text="aSize"           -- new ident
+   12: 
+   13:   /*
+   14:   /* more that should not be in the table */
+   15:   something = anything;
+   16:   if (something) {
+   17:     doNothing;
+   18:     nothing = -45;
+   19:   }
+   20:   */
+   21: 
+   22:   [7m A [0m[4mif[0m ([7m B [0m[4margc[0m [7m C [0m[4m=[0m= [7m D [0m[4m2[0m) {
+       -A Token#=3, Length=2, Text="if"              -- new ident
+       -B Token#=3, Length=4, Text="argc"            -- occurrence 2
+       -C Token#=6, Length=1, Text="="               
+       -D Token#=4, Length=1, Text="2"               
+   23:     [7m A [0m[4msrc[0m [7m B [0m[4m=[0m [7m C [0m[4margv[0m[[7m D [0m[4m1[0m];
+       -A Token#=3, Length=3, Text="src"             -- new ident
+       -B Token#=6, Length=1, Text="="               
+       -C Token#=3, Length=4, Text="argv"            -- occurrence 2
+       -D Token#=4, Length=1, Text="1"               
+   24:     [7m A [0m[4mlst[0m [7m B [0m[4m=[0m [7m C [0m[4mNULL[0m;
+       -A Token#=3, Length=3, Text="lst"             -- new ident
+       -B Token#=6, Length=1, Text="="               
+       -C Token#=3, Length=4, Text="NULL"            -- new ident
+   25:   }
+   26:   [7m A [0m[4melse[0m {
+       -A Token#=3, Length=4, Text="else"            -- new ident
+   27:     [7m A [0m[4mfprintf[0m([7m B [0m[4mstderr[0m,"[7m C [0m[4musage[0m: [7m D [0m[4mprogname[0m [7m E [0m[4marg1[0m [7m F [0m[4marg2[0m\[7m G [0m[4mn[0m");
+       -A Token#=3, Length=7, Text="fprintf"         -- new ident
+       -B Token#=3, Length=6, Text="stderr"          -- new ident
+       -C Token#=3, Length=5, Text="usage"           -- new ident
+       -D Token#=3, Length=8, Text="progname"        -- new ident
+       -E Token#=3, Length=4, Text="arg1"            -- new ident
+       -F Token#=3, Length=4, Text="arg2"            -- new ident
+       -G Token#=3, Length=1, Text="n"               -- new ident
+   28:     [7m A [0m[4mexit[0m([7m B [0m[4m1[0m); // Neither should this.
+       -A Token#=3, Length=4, Text="exit"            -- new ident
+       -B Token#=4, Length=1, Text="1"               
+   29:   }
+   30: 
+   31:   [7m A [0m[4maCount[0m [7m B [0m[4m=[0m [7m C [0m[4m432[0m * [7m D [0m[4m78[0m - [7m E [0m[4m3[0m;
+       -A Token#=3, Length=6, Text="aCount"          -- occurrence 2
+       -B Token#=6, Length=1, Text="="               
+       -C Token#=4, Length=3, Text="432"             
+       -D Token#=4, Length=2, Text="78"              
+       -E Token#=4, Length=1, Text="3"               
+   32:   [7m A [0m[4maSize[0m [7m B [0m[4m=[0m [7m C [0m[4m4.56[0m - [7m D [0m[4m2.34[0m;
+       -A Token#=3, Length=5, Text="aSize"           -- occurrence 2
+       -B Token#=6, Length=1, Text="="               
+       -C Token#=5, Length=4, Text="4.56"            
+       -D Token#=5, Length=4, Text="2.34"            
+   33:   [7m A [0m[4maCount[0m [7m B [0m[4m=[0m [7m C [0m[4m-400[0m;
+       -A Token#=3, Length=6, Text="aCount"          -- occurrence 3
+       -B Token#=6, Length=1, Text="="               
+       -C Token#=4, Length=4, Text="-400"            
+   34:   [7m A [0m[4maSize[0m [7m B [0m[4m=[0m [7m C [0m[4m-2.123[0m;
+       -A Token#=3, Length=5, Text="aSize"           -- occurrence 3
+       -B Token#=6, Length=1, Text="="               
+       -C Token#=5, Length=6, Text="-2.123"          
+   35: 
+   36:   [7m A [0m[4mexit[0m([7m B [0m[4m0[0m);
+       -A Token#=3, Length=4, Text="exit"            -- occurrence 2
+       -B Token#=4, Length=1, Text="0"               
+   37: }
+   38: [7m A [0m[4m@DUMP[0m
+       -A Token#=2, Length=5, Text="@DUMP"           
